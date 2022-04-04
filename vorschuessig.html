@@ -1,0 +1,54 @@
+<html><head>
+		<title>Vorschüssige Rentenrechnung</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<script>
+		"use strict";
+		function Rentenrechnung() {
+
+		var vRate;
+		var vZinssatz;
+		var vLaufzeit;
+		var vAusgabeHtml;
+		var vq;
+		var vStartjahr=0; 
+		var vRj;
+		var vZj;
+		var vRj1;
+		
+		vRate = parseFloat(document.getElementById("TextfeldRate").value);		
+		vLaufzeit = parseFloat(document.getElementById("TextfeldLaufzeit").value);
+		vZinssatz =	parseFloat(document.getElementById("TextfeldProzentsatz").value/100);
+		
+		vAusgabeHtml = "<table border 1><tr><th>Jahr</th><th>R<sub>j</sub></th><th>Z<sub>j</sub></th><th>r</th><th>R<sub>j+1</sub></th></tr>";
+		
+		vq = 1+ vZinssatz;
+		
+		while (vStartjahr<=vLaufzeit){
+		
+		vRj = vRate*((Math.pow(vq,vStartjahr)-1)/vZinssatz)*vq; // vq wegen Vorschüssige-Rente!
+		vZj = vRj* vZinssatz;
+		vRj1 = vRj + vZj + vRate;
+		//vRj1 = vRate*((Math.pow(vq,vStartjahr +1 )-1)/vZinssatz);
+		vAusgabeHtml = vAusgabeHtml + "<tr> <td>" + vStartjahr +  "</td> <td>" + vRj.toFixed(2) + " Euro" + "</td> <td>" + vZj.toFixed(2) + " Euro" + "</td> <td>" + vRate + " Euro "  + "</td> <td>" + vRj1.toFixed(2) + " Euro " + "</td> </tr>";
+		vStartjahr ++;
+	  
+   }
+		
+		document.getElementById("tableAusgabe").innerHTML = vAusgabeHtml;
+		
+}
+	</script>
+	</head>
+	
+	<body><h1>Vorschüssige Rentenrechnung</h1><br>
+	
+	<h2>Formel zur Berechnung </h2>
+	<img src="vorschuessig.png"></img> </br>
+	<p>-------------------------------------------------------------------------------------------------</p>
+	Höhe der rate (r): <input id="TextfeldRate" value="500" type="text" size="6"> €<br>
+	Anzahl der Laufzeit in Jahren (n): <input id="TextfeldLaufzeit" value="3" type="text" size="3"> Jahre<br>
+	Prozentsatz der verzinsung (p): <input id="TextfeldProzentsatz" value="4" type="text" size="3"> %<br>
+	<button onclick="Rentenrechnung();">Berechnen</button>
+	<div id="tableAusgabe"></div>
+	
+</body></html>
